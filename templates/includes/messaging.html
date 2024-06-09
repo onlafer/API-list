@@ -1,0 +1,35 @@
+{% load static %}
+
+{% if messages %}
+<div aria-live="polite" aria-atomic="true" class="position-absolute toast-container top-1 end-0 mt-4 px-5 d-none d-md-block" style="z-index: 1050">
+    {% for message in messages %}
+    <div class="toast bg-solid-white" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            {% if message.tags == 'success' %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#14c027" class="bi bi-check2" viewBox="0 0 16 16">
+                <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+            </svg>
+            {% elif message.tags == 'error' %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#c02714" class="bi bi-x" viewBox="0 0 16 16">
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+            {% elif message.tags == 'info' %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#1a9fff" class="bi bi-exclamation-lg" viewBox="0 0 16 16">
+                <path d="M7.005 3.1a1 1 0 1 1 1.99 0l-.388 6.35a.61.61 0 0 1-1.214 0L7.005 3.1ZM7 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"/>
+            </svg>
+            {% elif message.tags == 'warning' %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#c02714" class="bi bi-exclamation-lg" viewBox="0 0 16 16">
+                <path d="M7.005 3.1a1 1 0 1 1 1.99 0l-.388 6.35a.61.61 0 0 1-1.214 0L7.005 3.1ZM7 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"/>
+            </svg>
+            {% endif %}
+            <strong class="me-auto" style="font-family: 'Roboto', sans-serif; color: #525252">API list</strong>
+            <small class="text-body-secondary">Прямо сейчас</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
+        </div>
+        <div class="toast-body">
+            {{ message|safe|escape }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

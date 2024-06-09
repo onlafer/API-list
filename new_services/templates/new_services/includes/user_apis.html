@@ -1,0 +1,37 @@
+{% load static %}
+
+<table class="table table-hover align-middle">
+    <caption><small>В процессе проверки ваши заявки могут быть изменены или отклонены</small></caption>
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">Логотип</th>
+            <th scope="col">Имя сервиса</th>
+            <th scope="col">Дата заявки</th>
+            <th scope="col">Статус заявки</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user_api in user_apis %}
+        <tr>
+            <td>
+                {% if user_api.logo %}
+                <img src="{{ user_api.logo.url }}" alt="api-logo" width="35px" height="35px">
+                {% else %}
+                <img src="{% static 'img/base-api-logo.svg' %}" alt="base-api-logo" width="35px" height="35px">
+                {% endif %}
+            </td>
+            <td>{{ user_api.name }}</td>
+            <td>{{ user_api.created_at|date:"d.m.Y" }}</td>
+            <td>
+                {% if user_api.status == "being_checked" %}
+                <i class="bi bi-alarm"></i> Проверяется
+                {% elif user_api.status == "accepted" %}
+                <i class="bi bi-check-all"></i> Одобрено
+                {% else %}
+                <i class="bi bi-x-lg"></i> Отклонено
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

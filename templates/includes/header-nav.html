@@ -1,0 +1,169 @@
+{% load static %}
+{% load category_tags %}
+
+<section class="navigation m-0">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark m-0">
+      <div class="container-fluid align-items-center">
+        <a class="navbar-brand m-0" href="{% url 'category:list_filter' 'all' %}">
+          <img
+            src="{% static 'img/logo.svg' %}"
+            alt="brand-img"
+            width="35px"
+            height="35px"
+          />
+        </a>
+        <a class="navbar-brand me-0 ms-2 text-decoration-none" href="{% url 'category:list_filter' 'all' %}">
+          <span
+            class="navbar-brand lead me-0"
+            style="font-family: 'Roboto', sans-serif; color: #e1ce7a"
+            >API list</span
+          >
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#header-nav"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="header-nav">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+            <li class="nav-item">
+              <a href="{% url 'add_api' %}" class="btn btn-outline-light mx-2" style="font-family: 'Roboto', sans-serif">
+                Добавить свой API
+              </a>
+            </li>
+            <li class="nav-item" onclick="rotateImage()">
+              <button id="categoryList" class="btn nav-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
+                Категории
+                <svg id="chevronArrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(255,255,255,.55)" class="bi bi-chevron-down down-arrow" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                </svg>
+              </button>
+              
+              <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+                <div class="offcanvas-header">
+                  <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Категории API</h5>
+                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Закрыть"></button>
+                </div>
+                <div class="offcanvas-body">
+                  <ul class="p-0 row">
+                    <li class="col-6">
+                      <i class="bi bi-border-all"></i> <a href="{% url 'category:list_filter' 'all' %}" class='category-link'>Все сервисы</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="col-6">
+                      <i class="bi bi-suit-heart-fill"></i> <a href="{% url 'category:list_filter' 'favorites' %}" class='category-link'>Понравившиеся</a>
+                    </li>
+                    {% endif %}
+                    {% tag_categories as categories %}
+                    {% for category in categories %}
+                    <li class="col-6">
+                      {{category.icon|safe}} <a href="{% url 'category:list_filter' category.slug %}" class='category-link'>{{category.name}}</a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link {{ api_list_status }}"
+                aria-current="page"
+                href="{% url 'category:list_filter' 'all' %}"
+                >Список API
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link {{ our_api_status }}"
+                aria-current="page"
+                href=""
+                >Наши API</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link {{ about_us_status }}"
+                aria-current="page"
+                href="{% url 'about' %}"
+                >О нас</a
+              >
+            </li>
+            <li class="nav-item ms-2">
+                {% if request.user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle custom-dropdown-toggle" style="border-radius: 30%;" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% if request.user.image %}
+                            <img src="{{ request.user.image.url }}" style="border-radius: 30%;" alt="avatar">
+                        {% else %}
+                            <img src="{{ request.user.basesvg.url }}" alt="avatar">
+                        {% endif %}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-lg-end dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
+                        <div class="px-3" style="font-family: 'Roboto', sans-serif, light;">
+                            <p class="m-0" style="font-size: 15px; font-weight: 500;">{{ request.user.username }}</p>
+                            <p class="m-0 text-white-50" style="font-size:12px">{{ request.user.email }}</p>
+                        </div>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'user:profile' %}">
+                            <i class="bi bi-person-circle"></i>
+                            Профиль
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'edit_profile:edit_info' %}">
+                            <i class="bi bi-gear-fill"></i>
+                            Настройки
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'api:keys' %}">
+                            <i class="bi bi-key-fill"></i>
+                            API ключи
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        {% if user.is_admin or user.is_staff %}
+                        <li>
+                            <a class="dropdown-item" href="{% url 'admin:index' %}">
+                            <i class="bi bi-person-fill-gear"></i>
+                            Админка
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        {% endif %}
+                        <li>
+                            <a class="dropdown-item" href="{% url 'user:logout' %}">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Выйти
+                            </a>
+                        </li>
+                        </ul>
+                    </div>
+                {% else %}
+                  <a href="{% url 'user:login' %}">
+                    <button
+                        type="nav-button"
+                        class="btn btn-outline-light mx-2"
+                        style="font-family: 'Roboto', sans-serif"
+                        >Войти
+                    </button>
+                  </a>
+                {% endif %}
+              </button>
+            </li>
+            {% block navLinks %}{% endblock navLinks %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+</section>

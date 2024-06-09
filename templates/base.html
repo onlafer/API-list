@@ -1,0 +1,70 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ title }}</title>
+  {% include "includes/links/link_icon.html" %}
+  {% include "includes/links/link_bootstrap.html" %}
+  <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+  {% include "includes/links/link_fonts.html" %}
+  {% block other_links %}{% endblock other_links %}
+</head>
+<body>
+  {% include 'includes/header-nav.html' %}
+
+  <section class="page-content {% block content-bg %}{% endblock content-bg %}">
+    {% include 'includes/messaging.html' %}
+    <div class="container pt-5">
+      {% block content %}{% endblock content %}
+    </div>
+  </section>
+
+  <section id="site-footer">
+    <footer class="bg-dark text-light py-3 py-xl-8 py-xxl-9">
+      <div class="container-fluid overflow-hidden">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center">
+            <a class="navbar-brand" href="{% url 'category:list_filter' 'all' %}">
+              <img
+                src="{% static 'img/logo.svg' %}"
+                alt="brand-img"
+                width="40px"
+                height="40px"
+              />
+            </a>
+            <div class="text-white-50 footer-text">
+              <div>
+                Техническая поддержка:
+              </div>
+              <div>
+                onlafer1@gmail.com
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="text-white-50 footer-text ps-1">API list в соцсетях</div>
+            <div class="d-flex gap-2">
+              <img src="{% static 'img/vk-icon.svg' %}" alt="vk-icon" width="40px" height="40px">
+              <img src="{% static 'img/telegram-icon.svg' %}" alt="telegram-icon"  width="40px" height="40px">
+              <img src="{% static 'img/discord-icon.svg' %}" alt="discord-icon"  width="40px" height="40px">
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </section>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"
+  ></script>
+  <script src="{% static 'js/base.js' %}"></script>
+  {% if messages %}
+    <script src="{% static 'js/show_toasts.js' %}"></script>
+  {% endif %}
+  {% block scripts %}{% endblock scripts %}
+</body>
+</html>

@@ -1,0 +1,58 @@
+{% load static %}
+{% load favorite_tags %}
+
+<div class="accordionе">
+    {% for API in services %}
+      <div class="accordion-item {% if not forloop.last %}mb-4{% endif %} border">
+        <h2 class="accordion-header" id=#collapse{{API.id}}>
+          <button class="accordion-button bg-white text-dark collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapse{{API.id}}" aria-expanded="false" aria-controls="collapse{{API.id}}">
+            {% if API.logo %}
+              <img src="{{API.logo.url}}" class="me-2" alt="{{API.name}}" width="60px" height="60px" />
+            {% else %}
+              <img src="{% static 'img/base-api-logo.svg' %}" class="me-2" alt="API_logo" width="60px" height="60px" />
+            {% endif %}
+            <div class="">
+              <div class="d-flex align-items-center">
+                <h5 class='my-0 me-2'>
+                    {% if API.name %}
+                      {{API.name|safe}}
+                    {% endif %}
+                </h5>
+              </div>
+              {% if API.summary %}
+                {{API.summary|safe}}
+              {% endif %}
+            </div>
+          </button>
+        </h2>
+        <div id="collapse{{API.id}}" class="accordion-collapse collapse" aria-labelledby="collapse{{API.id}}">
+          <div class="accordion-body">
+            <div class="d-flex justify-content-between align-items-center ">
+              <button class="btn btn-sm btn-outline-success w-50 favorite-button" data-item-id="{{ API.id }}">
+                {% autoescape off %}
+                  {% if user.is_authenticated %}
+                    {% tag_favorites API.id user.id %}
+                  {% else %}
+                    {% tag_favorites API.id %}
+                  {% endif %}
+                {% endautoescape %}
+              </button>
+              <small class="text-secondary w-100 text-end">Последнее изменение: {{ API.date }}</small>
+            </div>
+            <p class="mt-2 mb-3">{{API.content|safe}}</p>
+            {% if API.realization or API.original %}
+              <div class="btn-group w-100" role="group">
+                {% if API.realization %}
+                  <a href="{{API.realization}}" class="btn btn-outline-primary">Графическая реализация</a>
+                {% endif %}
+                {% if API.original %}
+                  <a href="{{API.original}}" class="btn btn-outline-primary {% if API.realization %}border-start-0{% endif %}">Оригинальная документация</a>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div> <!--End accordion-->
