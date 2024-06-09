@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+{% load favorite_tags %}
+{% load new_apis_tags %}
+
+{% block other_links %}
+  <link rel="stylesheet" href="{% static 'users/css/profile.css' %}">
+{% endblock other_links %}
+
+{% block content %}
+    {% comment %} <h4 class="text-center mb-sm-3 mb-md-5">
+      <i class="bi bi-person-circle text-muted"></i>
+      {{ title }}
+    </h4> {% endcomment %}
+    {% include "users/includes/profile_nav.html" with profile_status='active' only %}
+    <div class="row justify-content-between g-1">
+      <div class="col-md-3 text-center">
+        <div class="profile-avatar">
+          {% if user.image %}
+            <img src="{{ user.image.url }}" style="border-radius: 30%; width: 150px; height: 150px" alt="avatar">
+          {% else %}
+            <img src="{{ user.basesvg.url }}" style="width: 150px; height: 150px" alt="avatar">
+          {% endif %}
+        </div>
+        <div class="user-initials dis">
+          <p class="mt-2">
+            {% if user.first_name and user.last_name %}
+              {{user.last_name}} {{user.first_name}}
+            {% else %}
+              {{user.username}}
+            {% endif %}
+            <a href="{% url 'edit_profile:edit_info' %}" class="text-secondary">
+              <i class="bi bi-gear-fill"></i>
+            </a>
+          </p>
+        </div> <!--End user-initials-->
+        <div id="create-key-button" class="btn text-white px-4 mb-3" style="background-color: #50C878;" data-bs-toggle="modal" 
+        data-bs-target="#create_api_key_modal">
+          + Создать API-ключ
+        </div>
+        <div class="modal fade" id="create_api_key_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body text-start">
+                <p id="api-key"></p>
+              </div>
+              <div class="modal-footer p-1">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!--End user-info-->
+      <div class="col-md-8">
+        {% tag_user_apis request.user as user_apis %}
+        {% if user_apis %}
+        <div class="mb-5">
+          <h5 class="mb-3 fw-normal">
+            Ваши заявки
+          </h5>
+          {% include "new_services/includes/user_apis.html" with user_apis=user_apis %}
+        </div>
+        {% endif %}
+        <div class="">
+          <h5 class="mb-3 fw-normal">
+            Понравившиеся сервисы
+          </h5>
+          {% if services %}
+          {% include "includes/accordion.html" %}
+          {% else %}
+          <p class="m-0 p-0">
+            <i class="bi bi-clipboard2-x"></i>
+            Список понравившихся сервисов пуст.
+          </p>
+          <small class="fw-normal text-secondary">Вы можете добавлять понравившиеся вам API в избранное, чтобы всегда иметь к ним доступ.</small>
+          {% include "category/includes/api_categories.html" %}
+          {% endif %}
+          {% if services.has_other_pages %}
+          {% include "includes/pagination.html" %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  {% if services %}
+  <script src="{% static 'favorites/js/toggle_favorite.js' %}"></script>
+  {% endif %}
+  <script src="{% static 'keys/js/create_key.js' %}"></script>
+{% endblock scripts %}

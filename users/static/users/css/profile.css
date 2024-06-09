@@ -1,0 +1,9 @@
+.profile-avatar img {
+    width: 120px;
+    height: 120px;
+}
+
+.user-initials p {
+    font-family: 'Roboto', "sans-serif";
+    font-size: 18px;
+}

@@ -1,0 +1,37 @@
+{% extends "users/base_auth.html" %}
+{% load static %}
+
+{% block login-classes %}active{% endblock login-classes %}
+
+{% block action_url %}
+  {% url 'user:login' %}
+{% endblock action_url %}
+
+{% block auth-form-content %}
+  {% if form.errors %} Введен неправильный адрес электронной почты или пароль {% endif %}
+  <div class="form-floating mb-3">  
+    <input type="username" class="form-control" 
+    value="{% if form.username.value %}{{ form.username.value }}{% endif %}" 
+    name="username" id="id_username" placeholder="Username" required>
+    <label for="id_username" class="text-secondary">Почта</label>
+  </div>
+  <div class="form-floating password_field">
+    <input type="password" class="form-control"
+      value="{% if form.password.value %}{{ form.password.value }}{% endif %}" 
+      name="password" id="id_password" placeholder="Password" required>
+    <label for="id_password" class="text-secondary">Пароль</label>
+    {% comment %} <img src="{% static 'users/img/eye.svg' %}" class="show_pas" alt="show_password" onclick="showPassword()" width="25px" height="25px"> {% endcomment %}
+  </div>
+  <a href="#" class="text-decoration-none">
+    <p class="mt-2">Восстановить</p>
+  </a>
+{% endblock auth-form-content %}
+
+{% block submit_text %}
+  Войти
+{% endblock submit_text %}
+
+{% comment %} {% block scripts %}
+  <script src="{% static 'users/js/show_password.js' %}"></script>
+{% endblock scripts %} {% endcomment %}
+
