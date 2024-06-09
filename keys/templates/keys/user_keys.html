@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% load api_keys_tags %}
+
+{% block content %}
+    {% include "users/includes/profile_nav.html" with api_keys_status='active' only %}
+    <div id="alert" class="alert alert-success d-flex align-items-center gap-2 d-none p-3 mb-4" role="alert">
+        <div>
+            <h5 id="staticBackdropLabel" class="m-0"></h5>
+            <p id="api-key" class="m-0"></p>
+        </div>
+    </div>
+    <div class="text-center">
+        <table class="table table-hover">
+            <thead>
+                <tr>    
+                    <th scope="col">№</th>
+                    <th scope="col">Ключ</th>
+                    <th scope="col">Статус</th>
+                    <th scope="col">Действия</th>
+                </tr>
+            </thead>
+            <tbody id="apikeys-tbody">
+                {% tag_user_api_keys user as api_keys %}
+                {% for api_key in api_keys %}
+                <tr id="{{ api_key.id }}">
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ api_key.key }}</td>
+                    <td>{% if api_key.is_active %}Активен{% else %}Не активен{% endif %}</td>
+                    <td><i class="bi {% if api_key.is_active %}bi-toggle2-on{% else %}bi-toggle2-off{% endif %} btn pt-0 changeKeyStatusBtn" data-id="{{ api_key.id }}"></i><i class="bi bi-trash3-fill btn pt-0 deleteKeyBtn" data-id="{{ api_key.id }}"></i></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div id="empty-list" class="pb-3 border-bottom {% if api_keys %}d-none{% endif %}"><i class="bi bi-clipboard2-x"></i> Список ключей пуст. Вы в любое время можете создать до 6 API-ключей.</div>
+    </div>
+    <div class="text-end mt-4">
+        <div id="create-key-button" class="btn btn-dark rounded-pill"><i class="bi bi-plus-lg pe-2"></i>Создать ключ</div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'keys/js/user_api_keys.js' %}"></script>
+{% endblock scripts %}
