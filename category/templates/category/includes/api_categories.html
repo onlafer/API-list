@@ -1,0 +1,11 @@
+{% load category_tags %}
+
+<div class="mt-4">
+    <h6 class="fw-normal">Категории API</h6>
+    {% tag_categories as categories %}
+    <div class="w-75 d-flex gap-5">
+        {% for category in categories %}
+        <a href="{% url 'category:list_filter' category.slug %}" class='alternative-link'>{{category.name}}</a>
+        {% endfor %}
+    </div>
+</div>

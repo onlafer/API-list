@@ -1,0 +1,43 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    {% include "includes/links/link_icon.html" %}
+    {% include "includes/links/link_bootstrap.html" %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    {% include "includes/links/link_fonts.html" %}
+    <link rel="stylesheet" href="{% static 'about/css/about.css' %}" />
+</head>
+<body>
+    {% include 'includes/header-nav.html' with about_us_status='active' %}
+    <section class="page-content {% block content-bg %}{% endblock content-bg %}">
+        {% include 'includes/messaging.html' %}
+        <div class="container pt-5">
+            <div class="about-container text-white p-4">
+                <h1 class="h2">О нас</h1>
+                <p>Наш сайт является удобным каталогом, который содержит список различных API сервисов для разработчиков и компаний, которые хотят интегрировать новые функции и возможности в свои продукты и приложения.</p>
+                <p>На нашем сайте вы найдете подробные описания каждого API, его функциональности, возможности интеграции, документацию и примеры использования. Мы также предоставляем возможность оценить каждый сервис, оставить отзывы и комментарии, чтобы помочь другим пользователям сделать правильный выбор. Мы постоянно обновляем наш список API, добавляя новые сервисы и технологии, чтобы предложить вам самые современные и эффективные решения для вашего проекта. Наш сайт поможет вам найти нужное API быстро и легко, сэкономив время и усилия.</p>
+                <h2 class="fw-light">Обратная связь</h2>
+                <p>При возникновении проблем или идей для улучшения нашего сайта вы всегда можете написать в личные сообщения наших сообществ или оставить заявку через форму обратной связи.</p>
+                <h2 class="h4 text-center pt-5">Мы в соцсетях</h2>
+                <div class="d-flex justify-content-center gap-4">
+                    <img src="{% static 'img/vk-icon.svg' %}" alt="vk-icon" width="50px" height="50px">
+                    <img src="{% static 'img/telegram-icon.svg' %}" alt="telegram-icon"  width="50px" height="50px">
+                    <img src="{% static 'img/discord-icon.svg' %}" alt="discord-icon"  width="50px" height="50px">
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="{% static 'js/base.js' %}"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="{% static 'about/js/about.js' %}"></script>
+</body>
+</html>

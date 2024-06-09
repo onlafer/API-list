@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block other_links %}
+  <link rel="stylesheet" href="{% static 'category/css/index.css' %}" />
+{% endblock other_links %}
+
+{% block api-list-status %}active{% endblock api-list-status %}
+{% block content %}
+  <div class="row">
+    <form action="{% if request.GET.q %}{% url 'category:search' %}{% else %}{% url 'category:list_filter' slug_url %}{% endif %}" class="mb-4 col-lg-4 d-lg-block d-none" method="get">
+      <h4 style="font-family: 'Roboto', sans-serif">Фильтры</h4>
+      <h6>Типы сервисов</h6>
+      <div class="mb-3 ms-3">
+        <div class="form-check">
+          <input class="form-check-input filter" type="radio" name="api_type" id="flexRadioDefault1" value="default" 
+          {% if not request.GET.api_type or request.GET.api_type == 'default' %}checked{% endif %}>
+          <label class="form-check-label" for="flexRadioDefault1">
+            Платные и бесплатные
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input filter" type="radio" name="api_type" id="flexRadioDefault2" value="free" 
+          {% if request.GET.api_type == 'free' %}checked{% endif %}>
+          <label class="form-check-label" for="flexRadioDefault2">
+            Бесплатные
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input filter" type="radio" name="api_type" id="flexRadioDefault3" value="paid" 
+          {% if request.GET.api_type == 'paid' %}checked{% endif %}>
+          <label class="form-check-label" for="flexRadioDefault3">
+            Платные
+          </label>
+        </div>
+      </div>
+      <h6>Новинки</h6>
+      <div class="mb-3 ms-3">
+        <div class="form-check">
+          <input class="form-check-input filter" type="checkbox" name="novelty" value="on" id="flexCheckDefault" 
+          {% if request.GET.novelty == 'on' %}checked{% endif %}>
+          {% if request.GET.q %}
+            <input type="hidden" name="q" value="{{ request.GET.q }}">
+          {% endif %}
+          <label class="form-check-label" for="flexCheckDefault">
+            Новинки
+          </label>
+        </div>
+      </div>
+      <h6>Типы документации</h6>
+      <div class="mb-3 ms-3">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" name="graph_impl" value="on" id="flexSwitchCheckDefault1" 
+          {% if request.GET.graph_impl == 'on' %}checked{% endif %}>
+          <label class="form-check-label" for="flexSwitchCheckDefault1">Графическая реализация</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" name="orig_doc" value="on" id="flexSwitchCheckDefault2" 
+          {% if request.GET.orig_doc == 'on' %}checked{% endif %}>
+          <label class="form-check-label" for="flexSwitchCheckDefault2">Документация</label>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Применить</button>
+    </form>
+    <div class="col">
+      <h4 style="font-family: 'IBM Plex Sans', sans-serif; font-weight: 400">Список API сервисов {% if category_name %}из категории "{{ category_name }}"{% endif %}</h4>
+      <div class="border rounded p-4">
+        <div class="mb-3">
+          <h4 style="font-family: 'Roboto', sans-serif">Поиск</h4>
+          <form class="d-flex" role="search" action="{% url 'category:search' %}" method="get">
+            <input class="form-control search-form me-2" type="search" name="q" placeholder="Название API, категории" aria-label="Search" {% if request.GET.q %}value="{{request.GET.q}}"{% endif %}>
+            <button class="btn btn-success w-25 d-lg-block d-none" type="submit">Искать</button>
+            <span type="button" class="input-group-text d-lg-none" data-bs-toggle="modal" data-bs-target="#filtersModal"><i class="bi bi-funnel-fill text-secondary"></i></span>
+          </form>
+
+          <div class="modal fade" id="filtersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 id="filtersModalLabel" class="modal-title" style="font-family: 'Roboto', sans-serif">Фильтры</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form action="{% if request.GET.q %}{% url 'category:search' %}{% else %}{% url 'category:list_filter' slug_url %}{% endif %}" method="get">
+                    <h4 style="font-family: 'Roboto', sans-serif">Фильтры</h4>
+                    <h6>Типы сервисов</h6>
+                    <div class="mb-3 ms-3">
+                      <div class="form-check">
+                        <input class="form-check-input filter" type="radio" name="API_type" id="flexRadioDefault1" value="default" 
+                        {% if not request.GET.API_type or request.GET.API_type == 'default' %}checked{% endif %}>
+                        <label class="form-check-label" for="flexRadioDefault1">
+                          Платные и бесплатные
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input filter" type="radio" name="API_type" id="flexRadioDefault2" value="free" 
+                        {% if request.GET.API_type == 'free' %}checked{% endif %}>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                          Бесплатные
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input filter" type="radio" name="API_type" id="flexRadioDefault3" value="paid" 
+                        {% if request.GET.API_type == 'paid' %}checked{% endif %}>
+                        <label class="form-check-label" for="flexRadioDefault3">
+                          Платные
+                        </label>
+                      </div>
+                    </div>
+                    <h6>Новинки</h6>
+                    <div class="mb-3 ms-3">
+                      <div class="form-check">
+                        <input class="form-check-input filter" type="checkbox" name="novelty" value="on" id="flexCheckDefault" 
+                        {% if request.GET.novelty == 'on' %}checked{% endif %}>
+                        {% if request.GET.q %}
+                          <input type="hidden" name="q" value="{{ request.GET.q }}">
+                        {% endif %}
+                        <label class="form-check-label" for="flexCheckDefault">
+                          Новинки
+                        </label>
+                      </div>
+                    </div>
+                    <h6>Типы документации</h6>
+                    <div class="mb-3 ms-3">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="graph_impl" value="on" id="flexSwitchCheckDefault1" 
+                        {% if request.GET.graph_impl == 'on' %}checked{% endif %}>
+                        <label class="form-check-label" for="flexSwitchCheckDefault1">Графическая реализация</label>
+                      </div>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="orig_doc" value="on" id="flexSwitchCheckDefault2" 
+                        {% if request.GET.orig_doc == 'on' %}checked{% endif %}>
+                        <label class="form-check-label" for="flexSwitchCheckDefault2">Документация</label>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Применить</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% if not services %}
+        <p>По запросу{% if request.GET.q %} <strong>{{request.GET.q}}</strong>{% endif %} ничего не найдено. Попробуйте изменить параметры поиска.</p>
+        {% include "category/includes/api_categories.html" %}
+        {% else %}
+        {% include "includes/accordion.html" %}
+        {% endif %}
+        {% if services.has_other_pages %}
+        {% include "includes/pagination.html" %}
+        {% endif %}
+      
+      </div> <!--End left block-->
+        </div> <!--End row-->
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{% static 'favorites/js/toggle_favorite.js' %}"></script>
+  <script src="{% static 'js/accordion_links.js' %}"></script>
+{% endblock scripts %}

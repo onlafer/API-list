@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block other_links %}
+  <link rel="stylesheet" href="{% static 'edit_profile/css/edit_info.css' %}">
+{% endblock other_links %}
+
+{% block content %}
+  {% include "users/includes/profile_nav.html" with settings_status='active' only %}
+  <div class="row justify-content-between">
+    {% include "edit_profile/includes/edit_nav.html" with edit_info_status='disabled' only %}
+    <form action="{% url 'edit_profile:edit_info' %}" class="col-7 px-5 border-start" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <h3 class="text-center mb-4">{{ title }}</h3>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control {% if form.first_name.errors %}is-invalid{% endif %}" 
+        value="{% if form.first_name.value %}{{ form.first_name.value }}{% endif %}" 
+        name="first_name" id="id_first_name" placeholder="First_name">
+        <label for="id_first_name" class="text-secondary">Фамилия</label>
+      </div>
+      {% if form.first_name.errors %}
+        <div class="text-danger">{{form.first_name.errors}}</div>
+      {% endif %}
+      <div class="form-floating mb-3">  
+        <input type="text" class="form-control {% if form.last_name.errors %}is-invalid{% endif %}" 
+        value="{% if form.last_name.value %}{{ form.last_name.value }}{% endif %}" 
+        name="last_name" id="id_last_name" placeholder="Last_name">
+        <label for="id_last_name" class="text-secondary">Имя</label>
+      </div>
+      {% if form.last_name.errors %}
+        <div class="text-danger">{{form.last_name.errors}}</div>
+      {% endif %}
+      <div class="form-floating mb-3 ">  
+        <input type="text" class="form-control {% if form.username.errors %}is-invalid{% endif %}" 
+        value="{{ form.username.value }}" 
+        name="username" id="id_username" placeholder="Username">
+        <label for="id_username" class="text-secondary">Имя пользователя</label>
+      </div>
+      {% if form.username.errors %}
+        <div class="text-danger">{{form.username.errors}}</div>
+      {% endif %}
+      <div class="form-check mb-3">
+        <input class="form-check-input {% if form.email_notifications.errors %}is-invalid{% endif %}" 
+        type="checkbox" name="email_notifications" id="id_email_notifications" 
+        {% if form.email_notifications.value %}checked{% endif %}>
+        <label class="form-check-label" for="id_email_notifications">
+          Получение уведомлений на почту
+        </label>
+      </div>
+      {% if form.email_notifications.errors %}
+        <div class="text-danger">{{form.email_notifications.errors}}</div>
+      {% endif %}
+      <div class="row mt-4">
+        <div class="col">
+          <img id="preview-image" src="{% if form.image.value %}{{form.image.value.url}}{% else %}{{request.user.basesvg.url}}{% endif %}" height="150px" width="150px" alt="Preview Image">
+          <div class="d-flex">
+            <label for="id_image" class="upload-img">Загрузить</label>
+            <input type="file" id="id_image" class="d-none" accept="image/*" 
+            name="image" placeholder="Image">
+            <div class="btn py-0 upload-img" type="button" onclick="resetImage('{{request.user.basesvg.url}}')">Сбросить</div>
+            <input type="hidden" id="reset" name="ResetImage">
+          </div>
+          {% if form.image.errors %}
+            <div class="text-danger">{{form.image.errors}}</div>
+          {% endif %}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary w-50 my-3">Сохранить</button>
+    </form>
+  </div>
+{% endblock content %}
+
+{% block scripts %}
+  <script src="{% static 'edit_profile/js/upload.js' %}"></script>
+{% endblock scripts %}

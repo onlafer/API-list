@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block password-cls %}text-secondary{% endblock password-cls %}
+
+{% block content %}
+  <form action="{% url 'edit_profile:edit_email' %}" class="col-5" method="post">
+    {% csrf_token %}
+    <h3 class="text-center mb-4">{{ title }}</h3>
+    <div class="form-floating mb-3">  
+      <input type="email" class="form-control {% if form.old_email.errors %}is-invalid{% endif %}"
+      name="old_email" id="id_old_email" placeholder="Password">
+      <label for="id_old_email" class="text-secondary">Старая почта</label>
+    </div>
+    {% if form.old_password.errors %}
+      <div class="text-danger">{{form.old_password.errors}}</div>
+    {% endif %}
+    <div class="form-floating mb-3">  
+      <input type="password" class="form-control {% if form.new_password1.errors %}is-invalid{% endif %}"
+      name="new_password1" id="id_new_password1" placeholder="Password">
+      <label for="id_new_password1" class="text-secondary">Новый пароль</label>
+    </div>
+    {% if form.new_password1.errors %}
+      <div class="text-danger">{{form.new_password1.errors}}</div>
+    {% endif %}
+    <div class="form-floating mb-3">  
+      <input type="password" class="form-control {% if form.new_password2.errors %}is-invalid{% endif %}"
+      name="new_password2" id="id_new_password2" placeholder="Password">
+      <label for="id_new_password2" class="text-secondary">Новый пароль (еще раз)</label>
+    </div>
+    {% if form.new_password2.errors %}
+      <div class="text-danger">{{form.new_password2.errors}}</div>
+    {% endif %}
+    <button type="submit" class="btn btn-primary w-100 my-3">Сохранить</button>
+  </form>
+{% endblock content %}

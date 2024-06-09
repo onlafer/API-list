@@ -1,0 +1,13 @@
+.upload-img {
+    cursor: pointer;
+    color: #3e88f6;
+}
+
+.upload-img:hover {
+    color: #0037ff;
+    transition: color 2s
+}
+
+#preview-image {
+    border-radius: 20%;
+}

@@ -1,0 +1,13 @@
+<div class="col-auto my-5">
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a class="nav-link {{ edit_info_status }}" href="{% url 'edit_profile:edit_info' %}">Редактировать профиль</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {{ edit_email_status }}" href="#">Изменить почту</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {{ edit_password_status }}" href="{% url 'edit_profile:edit_password' %}">Изменить пароль</a>
+    </li>
+  </ul>
+</div>

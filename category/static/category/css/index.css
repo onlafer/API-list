@@ -1,0 +1,35 @@
+.accordion .accordion-item:has(.accordion-button:not(.collapsed)) {
+    border: 2px solid #909090;
+    box-shadow: 5px 5px #d4d4d4;
+}
+
+.alternative-link {
+    color: rgb(1, 145, 255);
+    text-decoration: none;
+}
+
+.alternative-link:hover {
+    transition: 1s;
+    text-decoration-color: #0191ff;
+    text-decoration: underline;
+    text-decoration-color: rgba(4, 79, 229, 0.598);
+}
+
+.bg-solid-white {
+    background-color: white !important;
+}
+
+.add-to-favorites {
+    text-decoration: none;
+}
+
+.add-to-favorites:hover {
+    transition: 1s;
+    text-decoration-color: #0d6efd;
+    color: rgb(68, 129, 250);
+    text-decoration: underline;
+}
+
+.search-form::placeholder {
+    content: '<i class="bi bi-search"></i> Название API, категории';
+}
